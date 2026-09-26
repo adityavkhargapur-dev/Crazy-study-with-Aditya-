@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crazy Study with Aditya</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:linear-gradient(135deg,#4338ca,#7c3aed);color:white;padding:28px 18px;border-radius:0 0 24px 24px}
+h1{margin:0;font-size:30px}.tag{opacity:.9;margin-top:6px}.wrap{max-width:900px;margin:auto;padding:18px}
+.search{width:100%;padding:14px;border:0;border-radius:14px;margin:16px 0;box-shadow:0 2px 10px #0001;font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.card,.upload{background:white;border-radius:16px;padding:18px;box-shadow:0 3px 12px #00000010}
+.card{cursor:pointer;font-weight:bold}.icon{font-size:28px;margin-bottom:8px}
+.upload{margin-top:18px}.btn{display:inline-block;background:#4338ca;color:white;padding:12px 16px;border-radius:12px;border:0;font-weight:bold;cursor:pointer;margin:5px 5px 5px 0}
+input[type=file]{display:none}.items{margin-top:18px}.item{background:white;padding:14px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.small{font-size:13px;color:#667085}.empty{color:#667085;padding:18px;text-align:center}
+</style></head>
+<body>
+<header><div class="wrap"><h1>📚 Crazy Study with Aditya</h1><div class="tag">Learn • Practice • Grow</div></div></header>
+<main class="wrap">
+<input id="search" class="search" placeholder="🔍 Search notes / PDF / subject">
+<h2>Subjects</h2>
+<div class="grid" id="subjects">
+<div class="card" data-sub="Polity"><div class="icon">📘</div>Polity</div>
+<div class="card" data-sub="History"><div class="icon">🏛️</div>History</div>
+<div class="card" data-sub="Geography"><div class="icon">🌍</div>Geography</div>
+<div class="card" data-sub="Economy"><div class="icon">💰</div>Economy</div>
+<div class="card" data-sub="Science"><div class="icon">🔬</div>Science & Technology</div>
+<div class="card" data-sub="SSC CGL"><div class="icon">📝</div>SSC CGL</div>
+</div>
+<section class="upload">
+<h2>➕ Add Study Material</h2>
+<p class="small">PDF ya notebook photo select karo. Ye browser mein isi device par save rahega.</p>
+<label class="btn">📄 Add PDF<input id="pdf" type="file" accept="application/pdf"></label>
+<label class="btn">📸 Add Notebook Photo<input id="photo" type="file" accept="image/*"></label>
+</section>
+<h2>📚 My Library</h2><div id="items" class="items"></div>
+</main>
+<script>
+const key="crazyStudyMaterials"; let selected="All";
+const get=()=>JSON.parse(localStorage.getItem(key)||"[]");
+function save(a){localStorage.setItem(key,JSON.stringify(a))}
+function render(){
+ let q=document.getElementById("search").value.toLowerCase(), a=get().filter(x=>(selected==="All"||x.subject===selected)&&x.name.toLowerCase().includes(q));
+ const box=document.getElementById("items");
+ box.innerHTML=a.length?a.map((x,i)=>`<div class="item"><div><b>${x.type==="pdf"?"📄":"📸"} ${x.name}</b><div class="small">${x.subject} • ${x.date}</div></div><button class="btn" onclick="removeItem(${get().indexOf(x)})">Delete</button></div>`).join(""):'<div class="empty">Abhi koi material nahi hai.</div>';
+}
+function add(file,type){if(!file)return; let a=get(); a.push({name:file.name,type,subject:selected==="All"?"General":selected,date:new Date().toLocaleDateString("en-IN")}); save(a);render()}
+function removeItem(i){let a=get();a.splice(i,1);save(a);render()}
+document.getElementById("search").oninput=render;
+document.getElementById("pdf").onchange=e=>add(e.target.files[0],"pdf");
+document.getElementById("photo").onchange=e=>add(e.target.files[0],"photo");
+document.querySelectorAll(".card").forEach(c=>c.onclick=()=>{selected=c.dataset.sub;render()});
+render();
+</script>
+</body></html>
