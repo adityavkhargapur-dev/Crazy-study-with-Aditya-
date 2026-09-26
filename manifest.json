@@ -1,0 +1,9 @@
+{
+  "name": "Study PYQ Hub - By Aditya",
+  "short_name": "PYQ Hub",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#172554",
+  "description": "Class 10 to 12 Maths and Science PYQ, PDFs and practice."
+}
