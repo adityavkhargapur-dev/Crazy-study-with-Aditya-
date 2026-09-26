@@ -227,9 +227,20 @@ function showMathChapters() {
 
 <script>
 function showMessage(name){
-  alert(name + " section is ready. PYQ and PDF links will be added here.");
+  if(name === "PYQ"){
+    alert(
+      "कक्षा 12 गणित — Previous Year Questions\n\n" +
+      "प्रश्न 1: यदि f(x) = x² है, तो f'(x) क्या होगा?\n\n" +
+      "(A) x\n" +
+      "(B) 2x\n" +
+      "(C) x²\n" +
+      "(D) 2\n\n" +
+      "सही उत्तर: (B) 2x"
+    );
+  } else {
+    alert(name + " section is ready.");
+  }
 }
-
 function searchCards(){
   let input=document.getElementById("search").value.toLowerCase();
   let cards=document.querySelectorAll(".searchable");
