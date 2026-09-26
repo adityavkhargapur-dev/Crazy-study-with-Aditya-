@@ -1,57 +1,197 @@
-<!doctype html>
-<link rel="manifest" href="manifest.json">
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crazy Study with Aditya</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study PYQ Hub - By Aditya</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
-header{background:linear-gradient(135deg,#4338ca,#7c3aed);color:white;padding:28px 18px;border-radius:0 0 24px 24px}
-h1{margin:0;font-size:30px}.tag{opacity:.9;margin-top:6px}.wrap{max-width:900px;margin:auto;padding:18px}
-.search{width:100%;padding:14px;border:0;border-radius:14px;margin:16px 0;box-shadow:0 2px 10px #0001;font-size:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.card,.upload{background:white;border-radius:16px;padding:18px;box-shadow:0 3px 12px #00000010}
-.card{cursor:pointer;font-weight:bold}.icon{font-size:28px;margin-bottom:8px}
-.upload{margin-top:18px}.btn{display:inline-block;background:#4338ca;color:white;padding:12px 16px;border-radius:12px;border:0;font-weight:bold;cursor:pointer;margin:5px 5px 5px 0}
-input[type=file]{display:none}.items{margin-top:18px}.item{background:white;padding:14px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}
-.small{font-size:13px;color:#667085}.empty{color:#667085;padding:18px;text-align:center}
-</style></head>
-<body>
-<header><div class="wrap"><h1>📚 Crazy Study with Aditya</h1><div class="tag">Learn • Practice • Grow</div></div></header>
-<main class="wrap">
-<input id="search" class="search" placeholder="🔍 Search notes / PDF / subject">
-<h2>Subjects</h2>
-<div class="grid" id="subjects">
-<div class="card" data-sub="Polity"><div class="icon">📘</div>Polity</div>
-<div class="card" data-sub="History"><div class="icon">🏛️</div>History</div>
-<div class="card" data-sub="Geography"><div class="icon">🌍</div>Geography</div>
-<div class="card" data-sub="Economy"><div class="icon">💰</div>Economy</div>
-<div class="card" data-sub="Science"><div class="icon">🔬</div>Science & Technology</div>
-<div class="card" data-sub="SSC CGL"><div class="icon">📝</div>SSC CGL</div>
-</div>
-<section class="upload">
-<h2>➕ Add Study Material</h2>
-<p class="small">PDF ya notebook photo select karo. Ye browser mein isi device par save rahega.</p>
-<label class="btn">📄 Add PDF<input id="pdf" type="file" accept="application/pdf"></label>
-<label class="btn">📸 Add Notebook Photo<input id="photo" type="file" accept="image/*"></label>
-</section>
-<h2>📚 My Library</h2><div id="items" class="items"></div>
-</main>
-<script>
-const key="crazyStudyMaterials"; let selected="All";
-const get=()=>JSON.parse(localStorage.getItem(key)||"[]");
-function save(a){localStorage.setItem(key,JSON.stringify(a))}
-function render(){
- let q=document.getElementById("search").value.toLowerCase(), a=get().filter(x=>(selected==="All"||x.subject===selected)&&x.name.toLowerCase().includes(q));
- const box=document.getElementById("items");
- box.innerHTML=a.length?a.map((x,i)=>`<div class="item"><div><b>${x.type==="pdf"?"📄":"📸"} ${x.name}</b><div class="small">${x.subject} • ${x.date}</div></div><button class="btn" onclick="removeItem(${get().indexOf(x)})">Delete</button></div>`).join(""):'<div class="empty">Abhi koi material nahi hai.</div>';
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  color:#222;
 }
-function add(file,type){if(!file)return; let a=get(); a.push({name:file.name,type,subject:selected==="All"?"General":selected,date:new Date().toLocaleDateString("en-IN")}); save(a);render()}
-function removeItem(i){let a=get();a.splice(i,1);save(a);render()}
-document.getElementById("search").oninput=render;
-document.getElementById("pdf").onchange=e=>add(e.target.files[0],"pdf");
-document.getElementById("photo").onchange=e=>add(e.target.files[0],"photo");
-document.querySelectorAll(".card").forEach(c=>c.onclick=()=>{selected=c.dataset.sub;render()});
-render();
+header{
+  background:#172554;
+  color:white;
+  text-align:center;
+  padding:28px 15px;
+}
+header h1{margin:0;font-size:30px}
+header p{margin:8px 0 0;font-size:16px}
+
+.container{
+  max-width:900px;
+  margin:25px auto;
+  padding:0 15px;
+}
+
+.search{
+  width:100%;
+  padding:14px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:16px;
+  margin-bottom:22px;
+}
+
+h2{
+  margin-top:25px;
+  color:#172554;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h3{margin-top:0}
+
+button{
+  width:100%;
+  padding:12px;
+  border:0;
+  border-radius:9px;
+  background:#2563eb;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+}
+
+button:hover{background:#1d4ed8}
+
+footer{
+  text-align:center;
+  padding:25px;
+  margin-top:30px;
+  background:#172554;
+  color:white;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📚 Study PYQ Hub</h1>
+  <p>By Aditya • Class 10th, 11th & 12th</p>
+</header>
+
+<div class="container">
+
+  <input
+    class="search"
+    id="search"
+    type="text"
+    placeholder="Search Class, Maths, Science, PYQ..."
+    onkeyup="searchCards()"
+  >
+
+  <h2>🎓 Select Class</h2>
+
+  <div class="grid">
+
+    <div class="card searchable">
+      <h3>📘 Class 10</h3>
+      <p>Maths & Science PYQ</p>
+      <button onclick="showMessage('Class 10')">Open</button>
+    </div>
+
+    <div class="card searchable">
+      <h3>📗 Class 11</h3>
+      <p>Maths & Science PYQ</p>
+      <button onclick="showMessage('Class 11')">Open</button>
+    </div>
+
+    <div class="card searchable">
+      <h3>📕 Class 12</h3>
+      <p>Maths & Science PYQ</p>
+      <button onclick="showMessage('Class 12')">Open</button>
+    </div>
+
+  </div>
+
+  <h2>📖 Subjects</h2>
+
+  <div class="grid">
+
+    <div class="card searchable">
+      <h3>📐 Mathematics</h3>
+      <p>Previous Year Questions & Practice</p>
+      <button onclick="showMessage('Mathematics')">View PYQ</button>
+    </div>
+
+    <div class="card searchable">
+      <h3>🔬 Science</h3>
+      <p>Physics • Chemistry • Biology</p>
+      <button onclick="showMessage('Science')">View PYQ</button>
+    </div>
+
+  </div>
+
+  <h2>📄 Study Material</h2>
+
+  <div class="grid">
+
+    <div class="card searchable">
+      <h3>📝 Previous Year Questions</h3>
+      <p>Class 10–12 PYQ collection</p>
+      <button onclick="showMessage('PYQ')">Open PYQ</button>
+    </div>
+
+    <div class="card searchable">
+      <h3>📥 PDF Section</h3>
+      <p>Notes and available study PDFs</p>
+      <button onclick="showMessage('PDF')">Open PDFs</button>
+    </div>
+
+    <div class="card searchable">
+      <h3>🎯 Practice</h3>
+      <p>Chapter-wise practice questions</p>
+      <button onclick="showMessage('Practice')">Start Practice</button>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <b>Study PYQ Hub</b><br>
+  Made with ❤️ by Aditya
+</footer>
+
+<script>
+function showMessage(name){
+  alert(name + " section is ready. PYQ and PDF links will be added here.");
+}
+
+function searchCards(){
+  let input=document.getElementById("search").value.toLowerCase();
+  let cards=document.querySelectorAll(".searchable");
+
+  cards.forEach(function(card){
+    let text=card.innerText.toLowerCase();
+
+    if(text.includes(input)){
+      card.classList.remove("hidden");
+    }else{
+      card.classList.add("hidden");
+    }
+  });
+}
 </script>
-</body></html>
+
+</body>
+</html>
